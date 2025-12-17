@@ -63,87 +63,137 @@ const SchoolSaleConfAcadeInfo = ({ formData, onChange, overviewData, errors = {}
 
       {/* Row 1 */}
       <div className={styles.formGrid}>
-        <Dropdown
-          dropdownname="Orientation Name"
-          name="orientationName"
-          results={state.orientationsLoading ? [] : state.orientationOptions}
-          value={state.getOrientationDisplayValue(formData.orientationName)}
-          onChange={state.handleOrientationChange}
-          disabled={state.orientationsLoading || !state.branchId || !state.joiningClassId}
-        />
+        <div>
+          <Dropdown
+            dropdownname="Orientation Name"
+            name="orientationName"
+            results={state.orientationsLoading ? [] : state.orientationOptions}
+            value={state.getOrientationDisplayValue(formData.orientationName)}
+            onChange={state.handleOrientationChange}
+            disabled={state.orientationsLoading || !state.branchId || !state.joiningClassId}
+          />
+          {errors.orientationName && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.orientationName}</span>
+          )}
+        </div>
 
         <div>
           <Inputbox
-            label="Orientation Fee"
+            label={
+              <>
+                <span>Orientation Fee</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            }
             name="orientationFee"
             placeholder="0.0"
             value={formData.orientationFee}
             onChange={onChange}
           />
           {errors.orientationFee && (
-            <span className={styles.errorMessage}>{errors.orientationFee}</span>
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.orientationFee}</span>
           )}
         </div>
 
-        <Inputbox
-          label="Score App No"
-          name="scoreAppNo"
-          placeholder="Enter score app No"
-          value={formData.scoreAppNo}
-          onChange={handleScoreAppNoChange}
-          type="tel"
-        />
+        <div>
+          <Inputbox
+            label={
+              <>
+                <span>Score App No</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            }
+            name="scoreAppNo"
+            placeholder="Enter score app No"
+            value={formData.scoreAppNo}
+            onChange={handleScoreAppNoChange}
+            type="tel"
+          />
+          {errors.scoreAppNo && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.scoreAppNo}</span>
+          )}
+        </div>
       </div>
 
       {/* Row 2 */}
       <div className={styles.formGrid}>
-        <Inputbox
-          label="Score Marks"
-          name="scoreMarks"
-          placeholder="Enter marks"
-          value={formData.scoreMarks}
-          onChange={handleScoreMarksChange}
-          type="tel"
-        />
+        <div>
+          <Inputbox
+            label={
+              <>
+                <span>Score Marks</span>
+                {/* <span style={{ color: 'red', marginLeft: '2px' }}>*</span> */}
+              </>
+            }
+            name="scoreMarks"
+            placeholder="Enter marks"
+            value={formData.scoreMarks}
+            onChange={handleScoreMarksChange}
+            type="tel"
+          />
+          {/* {errors.scoreMarks && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.scoreMarks}</span>
+          )} */}
+        </div>
 
-        <Dropdown
-          dropdownname="Food Type"
-          name="foodType"
-          results={state.foodTypesLoading ? [] : state.foodTypeOptions}
-          value={state.getFoodTypeDisplayValue(formData.foodType)}
-          onChange={state.handleFoodTypeChange}
-          disabled={state.foodTypesLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname="Food Type"
+            name="foodType"
+            results={state.foodTypesLoading ? [] : state.foodTypeOptions}
+            value={state.getFoodTypeDisplayValue(formData.foodType)}
+            onChange={state.handleFoodTypeChange}
+            disabled={state.foodTypesLoading}
+          />
+          {errors.foodType && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.foodType}</span>
+          )}
+        </div>
 
-        <Dropdown
-          dropdownname="Blood Group"
-          name="bloodGroup"
-          results={state.bloodGroupsLoading ? [] : state.bloodGroupOptions}
-          value={state.getBloodGroupDisplayValue(formData.bloodGroup)}
-          onChange={state.handleBloodGroupChange}
-          disabled={state.bloodGroupsLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname="Blood Group"
+            name="bloodGroup"
+            results={state.bloodGroupsLoading ? [] : state.bloodGroupOptions}
+            value={state.getBloodGroupDisplayValue(formData.bloodGroup)}
+            onChange={state.handleBloodGroupChange}
+            disabled={state.bloodGroupsLoading}
+          />
+          {errors.bloodGroup && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.bloodGroup}</span>
+          )}
+        </div>
       </div>
 
       {/* Row 3 */}
       <div className={styles.formGrid}>
-        <Dropdown
-          dropdownname="Caste"
-          name="caste"
-          results={state.castesLoading ? [] : state.casteOptions}
-          value={state.getCasteDisplayValue(formData.caste)}
-          onChange={state.handleCasteChange}
-          disabled={state.castesLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname="Caste"
+            name="caste"
+            results={state.castesLoading ? [] : state.casteOptions}
+            value={state.getCasteDisplayValue(formData.caste)}
+            onChange={state.handleCasteChange}
+            disabled={state.castesLoading}
+          />
+          {errors.caste && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.caste}</span>
+          )}
+        </div>
 
-        <Dropdown
-          dropdownname="Religion"
-          name="religion"
-          results={state.religionsLoading ? [] : state.religionOptions}
-          value={state.getReligionDisplayValue(formData.religion)}
-          onChange={state.handleReligionChange}
-          disabled={state.religionsLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname="Religion"
+            name="religion"
+            results={state.religionsLoading ? [] : state.religionOptions}
+            value={state.getReligionDisplayValue(formData.religion)}
+            onChange={state.handleReligionChange}
+            disabled={state.religionsLoading}
+          />
+          {errors.religion && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.religion}</span>
+          )}
+        </div>
       </div>
     </div>
   );

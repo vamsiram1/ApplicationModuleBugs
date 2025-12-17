@@ -52,6 +52,7 @@ export const damagedFields = [
         type: "textarea",
         disabled: false,
         placeholder: "Enter Reason",
+        required:true,
       },
 ]
  

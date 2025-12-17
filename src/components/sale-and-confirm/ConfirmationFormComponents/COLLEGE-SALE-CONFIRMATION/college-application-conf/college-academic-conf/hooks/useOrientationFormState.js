@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   useCities,
   useCampusesByCity,
   useClassesByCampus,
   useOrientationsByClassAndCampus,
-  useStudentTypesByOrientationAndCampus,
   useOrientationFeeDetails,
 } from "../../../../../../../hooks/college-apis/form-apis/OrientationInfoJs";
+import { useGetStudentTypeByClass } from "../../../../../../../queries/saleApis/clgSaleApis";
 import {
   formatDateForInput,
   getCampusDisplay,
@@ -50,7 +50,12 @@ export default function useOrientationFormState({ academicYear, onDataChange, ov
   const { campuses, loading: campusesLoading } = useCampusesByCity(selectedCityId);
   const { classes, loading: classesLoading } = useClassesByCampus(selectedCampusId);
   const { orientations, loading: orientationsLoading } = useOrientationsByClassAndCampus(selectedClassId, selectedCampusId);
-  const { studentTypes, loading: studentTypesLoading } = useStudentTypesByOrientationAndCampus(selectedOrientationId, selectedCampusId);
+  // Use the same student-type API used in the College Sale flow (by campusId + classId)
+  const { data: studentTypeRaw, isLoading: studentTypesLoading } = useGetStudentTypeByClass(selectedCampusId, selectedClassId);
+  const studentTypes = useMemo(
+    () => Array.isArray(studentTypeRaw) ? studentTypeRaw : (Array.isArray(studentTypeRaw?.data) ? studentTypeRaw.data : []),
+    [studentTypeRaw]
+  );
   const { feeDetails } = useOrientationFeeDetails(selectedOrientationId);
 
   // Derived dropdown options
@@ -58,7 +63,10 @@ export default function useOrientationFormState({ academicYear, onDataChange, ov
   const branchOptions = campuses?.map(getCampusDisplay) || [];
   const classOptions = classes?.map(getClassDisplay) || [];
   const orientationOptions = orientations?.map(getOrientationDisplay) || [];
-  const studentTypeOptions = Array.isArray(studentTypes) ? studentTypes.map(getStudentTypeDisplay) : [];
+  const studentTypeOptions = useMemo(
+    () => Array.isArray(studentTypes) ? studentTypes.map(getStudentTypeDisplay) : [],
+    [studentTypes]
+  );
 
   // Fee details -> course dates and fee
   useEffect(() => {
@@ -137,6 +145,11 @@ export default function useOrientationFormState({ academicYear, onDataChange, ov
     setSelectedClassId(classId);
     setSelectedClassName(selectedClass);
     // Reset downstream
+    // Also clear any previously selected branch/campus when class changes
+    // This ensures the branch field is emptied if it was auto-populated earlier
+    setSelectedCampusId(null);
+    setSelectedBranchName("");
+
     setSelectedOrientationId(null);
     setSelectedCourseName("");
     setSelectedStudentType("");

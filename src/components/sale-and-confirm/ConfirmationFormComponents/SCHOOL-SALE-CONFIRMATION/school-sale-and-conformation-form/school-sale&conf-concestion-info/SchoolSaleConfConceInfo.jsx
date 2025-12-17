@@ -14,6 +14,11 @@ const SchoolSaleConfConceInfo = ({ formData, onChange, errors = {} }) => {
   // Fetch concession types from API
   const { concessionTypeOptions, getConcessionTypeIdByLabel, getConcessionTypeLabelById, loading: concessionTypesLoading } = useConcessionTypes();
 
+  // Check if any concession amount is entered (makes other fields mandatory)
+  const admissionConcession = formData.admissionConcession ? Number(formData.admissionConcession) : 0;
+  const tuitionConcession = formData.tuitionConcession ? Number(formData.tuitionConcession) : 0;
+  const hasConcessionAmount = admissionConcession > 0 || tuitionConcession > 0;
+
   // Handle employee change - convert "Label - ID" format to ID before storing
   const handleEmployeeChange = (fieldName) => (e) => {
     const selectedValue = e.target.value;
@@ -192,7 +197,7 @@ const SchoolSaleConfConceInfo = ({ formData, onChange, errors = {} }) => {
             type="tel"
           />
           {errors.admissionConcession && (
-            <span className={styles.errorMessage}>{errors.admissionConcession}</span>
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.admissionConcession}</span>
           )}
         </div>
 
@@ -206,13 +211,18 @@ const SchoolSaleConfConceInfo = ({ formData, onChange, errors = {} }) => {
             type="tel"
           />
           {errors.tuitionConcession && (
-            <span className={styles.errorMessage}>{errors.tuitionConcession}</span>
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.tuitionConcession}</span>
           )}
         </div>
 
         <div>
           <Dropdown
-            dropdownname="Referred by"
+            dropdownname={hasConcessionAmount ? (
+              <>
+                <span>Referred by</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            ) : "Referred by"}
             name="referredBy"
             results={employeesLoading ? [] : employeeOptions}
             value={getEmployeeDisplayValue(formData.referredBy)}
@@ -220,24 +230,39 @@ const SchoolSaleConfConceInfo = ({ formData, onChange, errors = {} }) => {
             disabled={employeesLoading}
           />
           {errors.referredBy && (
-            <span className={styles.errorMessage}>{errors.referredBy}</span>
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.referredBy}</span>
           )}
         </div>
       </div>
 
       {/* Row 2 */}
       <div className={styles.formGrid3}>
-        <Inputbox
-          label="Description"
-          name="concessionDescription"
-          placeholder="Enter description"
-          value={formData.concessionDescription}
-          onChange={onChange}
-        />
+        <div>
+          <Inputbox
+            label={hasConcessionAmount ? (
+              <>
+                <span>Description</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            ) : "Description"}
+            name="concessionDescription"
+            placeholder="Enter description"
+            value={formData.concessionDescription}
+            onChange={onChange}
+          />
+          {errors.concessionDescription && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.concessionDescription}</span>
+          )}
+        </div>
 
         <div>
           <Dropdown
-            dropdownname="Concession Reason"
+            dropdownname={hasConcessionAmount ? (
+              <>
+                <span>Concession Reason</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            ) : "Concession Reason"}
             name="concessionReason"
             results={concessionReasonsLoading ? [] : concessionReasonOptions}
             value={getConcessionReasonDisplayValue(formData.concessionReason)}
@@ -245,13 +270,18 @@ const SchoolSaleConfConceInfo = ({ formData, onChange, errors = {} }) => {
             disabled={concessionReasonsLoading}
           />
           {errors.concessionReason && (
-            <span className={styles.errorMessage}>{errors.concessionReason}</span>
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.concessionReason}</span>
           )}
         </div>
 
         <div>
           <Dropdown
-            dropdownname="Authorized by"
+            dropdownname={hasConcessionAmount ? (
+              <>
+                <span>Authorized by</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            ) : "Authorized by"}
             name="authorizedBy"
             results={employeesLoading ? [] : employeeOptions}
             value={getEmployeeDisplayValue(formData.authorizedBy)}
@@ -259,7 +289,7 @@ const SchoolSaleConfConceInfo = ({ formData, onChange, errors = {} }) => {
             disabled={employeesLoading}
           />
           {errors.authorizedBy && (
-            <span className={styles.errorMessage}>{errors.authorizedBy}</span>
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.authorizedBy}</span>
           )}
         </div>
       </div>

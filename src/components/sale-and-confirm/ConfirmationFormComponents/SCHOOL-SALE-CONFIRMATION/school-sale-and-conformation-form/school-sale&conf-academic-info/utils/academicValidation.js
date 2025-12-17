@@ -33,6 +33,36 @@ export function validateAcademicInfo(formData) {
     errors.orientationFee = "Orientation Fee is required";
   }
 
+  // Score Marks is required
+  const scoreMarks = safeTrim(formData.scoreMarks);
+  if (!scoreMarks) {
+    errors.scoreMarks = "Score Marks is required";
+  }
+
+  // Food Type is required
+  const foodType = safeTrim(formData.foodType);
+  if (!foodType) {
+    errors.foodType = "Food Type is required";
+  }
+
+  // Blood Group is required
+  const bloodGroup = safeTrim(formData.bloodGroup);
+  if (!bloodGroup) {
+    errors.bloodGroup = "Blood Group is required";
+  }
+
+  // Caste is required
+  const caste = safeTrim(formData.caste);
+  if (!caste) {
+    errors.caste = "Caste is required";
+  }
+
+  // Religion is required
+  const religion = safeTrim(formData.religion);
+  if (!religion) {
+    errors.religion = "Religion is required";
+  }
+
   return errors;
 }
 
@@ -54,14 +84,19 @@ export function validateConcessionInfo(formData) {
   // Check if any concession amount is entered
   const hasConcessionAmount = admissionConcession > 0 || tuitionConcession > 0;
 
-  // If any concession amount is entered, make referredBy, concessionReason, and authorizedBy mandatory
+  // If any concession amount is entered, make referredBy, concessionDescription, concessionReason, and authorizedBy mandatory
   if (hasConcessionAmount) {
     const referredBy = safeTrim(formData.referredBy);
+    const concessionDescription = safeTrim(formData.concessionDescription);
     const concessionReason = safeTrim(formData.concessionReason);
     const authorizedBy = safeTrim(formData.authorizedBy);
 
     if (!referredBy) {
       errors.referredBy = "Referred by is required when concession amount is entered";
+    }
+
+    if (!concessionDescription) {
+      errors.concessionDescription = "Description is required when concession amount is entered";
     }
 
     if (!concessionReason) {

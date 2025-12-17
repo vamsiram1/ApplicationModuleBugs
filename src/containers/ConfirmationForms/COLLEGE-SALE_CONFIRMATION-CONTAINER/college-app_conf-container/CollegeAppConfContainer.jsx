@@ -202,6 +202,7 @@ const CollegeAppConfContainer = ({ onBack, onProceedToPayment, detailsObject, ov
       delete newErrors.firstYearConcession;
       delete newErrors.secondYearConcession;
       delete newErrors.referredBy;
+  delete newErrors.reason;
       delete newErrors.concessionReason;
       delete newErrors.authorizedBy;
       delete newErrors.concessionAmount;
@@ -215,6 +216,9 @@ const CollegeAppConfContainer = ({ onBack, onProceedToPayment, detailsObject, ov
       }
       if (concessionErrors.referredBy) {
         newErrors.referredBy = concessionErrors.referredBy;
+      }
+      if (concessionErrors.reason) {
+        newErrors.reason = concessionErrors.reason;
       }
       if (concessionErrors.concessionReason) {
         newErrors.concessionReason = concessionErrors.concessionReason;
@@ -249,7 +253,7 @@ const CollegeAppConfContainer = ({ onBack, onProceedToPayment, detailsObject, ov
       return newErrors;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.firstYearConcession, formData.secondYearConcession, formData.referredBy, formData.concessionReason, formData.authorizedBy, formData.concessionWrittenOnApplication, formData.concessionAmount, academicFormData.courseFee]);
+  }, [formData.firstYearConcession, formData.secondYearConcession, formData.referredBy, formData.concessionReason, formData.authorizedBy, formData.description, formData.concessionWrittenOnApplication, formData.concessionAmount, academicFormData.courseFee]);
 
   const closeSnackbar = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));

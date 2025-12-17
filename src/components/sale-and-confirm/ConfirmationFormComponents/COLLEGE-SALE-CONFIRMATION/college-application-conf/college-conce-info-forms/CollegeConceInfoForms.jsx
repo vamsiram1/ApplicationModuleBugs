@@ -100,13 +100,18 @@ const CollegeConceInfoForms = ({ formData, onChange, academicYear, academicYearI
 
       {/* Row 2 */}
       <div className={styles.grid}>
-        <Inputbox
-          label="Description"
-          name="description"
-          placeholder="Enter Description"
-          value={formData?.description || ""}
-          onChange={onChange}
-        />
+        <div>
+          <Inputbox
+            label="Description"
+            name="description"
+            placeholder="Enter Description"
+            value={formData?.description || ""}
+            onChange={onChange}
+          />
+          {errors.description && (
+            <span className={styles.errorMessage}>{errors.description}</span>
+          )}
+        </div>
 
         <div>
           <Dropdown
@@ -123,7 +128,7 @@ const CollegeConceInfoForms = ({ formData, onChange, academicYear, academicYearI
 
         <div>
           <Dropdown
-            dropdownname="Concession Reason *"
+            dropdownname="Concession Reason "
             name="concessionReason"
             results={state.concessionReasonOptions}
             onChange={state.handleConcessionReasonChange}
@@ -165,20 +170,27 @@ const CollegeConceInfoForms = ({ formData, onChange, academicYear, academicYearI
             <span className={styles.errorMessage}>{errors.concessionAmount}</span>
           )}
         </div>
-        <Dropdown
-          dropdownname="Concession Referred By"
-          name="concessionReferredBy"
-          results={state.dropdownOptions}
-          onChange={state.handleConcessionReferredByChange}
-          value={state.selectedConcessionReferredBy ?? formData?.concessionReferredBy ?? overviewData?.concessionReferredBy ?? ""}
-        />
-        <Inputbox
-          label="Reason"
-          name="reason"
-          placeholder="Enter Reason"
-          value={formData?.reason ?? overviewData?.reason ?? "Special Concession"}
-          onChange={handleFieldChange}
-        />
+        <div>
+          <Dropdown
+            dropdownname="Concession Referred By"
+            name="concessionReferredBy"
+            results={state.dropdownOptions}
+            onChange={state.handleConcessionReferredByChange}
+            value={state.selectedConcessionReferredBy ?? formData?.concessionReferredBy ?? overviewData?.concessionReferredBy ?? ""}
+          />
+        </div>
+        <div>
+          <Inputbox
+            label="Reason"
+            name="reason"
+            placeholder="Enter Reason"
+            value={formData?.reason ?? overviewData?.reason ?? "Special Concession"}
+            onChange={handleFieldChange}
+          />
+          {errors.reason && (
+            <span className={styles.errorMessage}>{errors.reason}</span>
+          )}
+        </div>
       </div>
     )}
   </>

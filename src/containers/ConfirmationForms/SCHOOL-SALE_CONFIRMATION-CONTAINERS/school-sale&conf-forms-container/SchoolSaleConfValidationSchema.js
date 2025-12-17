@@ -25,37 +25,23 @@ const schoolSaleConfValidationSchema = (maxConcessionLimit = 999999) =>
     // ===================================================
     // PARENT INFORMATION - FATHER
     // ===================================================
-    // Father Name: Optional, but if provided must be alphabets only with single spaces
+    // Father Name: Required, must be alphabets only with single spaces, max 20 characters
     fatherName: Yup.string()
+      .required("Father Name is required")
       .trim()
-      .nullable()
+      .max(20, "Father Name must not exceed 20 characters")
       .matches(onlyLettersSingleSpace, "Only alphabets allowed, single space only"),
 
-    // Father Phone: Required if father name is provided, must be valid 10-digit phone starting with 6-9
+    // Father Phone: Required, must be valid 10-digit phone starting with 6-9
     fatherPhone: Yup.string()
-      .nullable()
-      .when("fatherName", {
-        is: (val) => val && val.trim().length > 0,
-        then: (schema) =>
-          schema
-            .required("Phone number is required when father name is provided")
-            .matches(phoneRegex, "Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits"),
-        otherwise: (schema) =>
-          schema.matches(phoneRegex, "Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits"),
-      }),
+      .required("Phone number is required")
+      .matches(phoneRegex, "Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits"),
 
-    // Father Email: Required if father name is provided, must be valid email format
+    // Father Email: Required, must be valid email format
     fatherEmail: Yup.string()
+      .required("Email is required")
       .trim()
-      .nullable()
-      .when("fatherName", {
-        is: (val) => val && val.trim().length > 0,
-        then: (schema) =>
-          schema
-            .required("Email is required when father name is provided")
-            .matches(emailRegex, "Please enter a valid email address"),
-        otherwise: (schema) => schema.matches(emailRegex, "Please enter a valid email address"),
-      }),
+      .matches(emailRegex, "Please enter a valid email address"),
 
     // Father Sector: Optional dropdown selection
     fatherSector: Yup.string().nullable(),
@@ -74,37 +60,23 @@ const schoolSaleConfValidationSchema = (maxConcessionLimit = 999999) =>
     // ===================================================
     // PARENT INFORMATION - MOTHER
     // ===================================================
-    // Mother Name: Optional, but if provided must be alphabets only with single spaces
+    // Mother Name: Required, must be alphabets only with single spaces, max 20 characters
     motherName: Yup.string()
+      .required("Mother Name is required")
       .trim()
-      .nullable()
+      .max(20, "Mother Name must not exceed 20 characters")
       .matches(onlyLettersSingleSpace, "Only alphabets allowed, single space only"),
 
-    // Mother Phone: Required if mother name is provided, must be valid 10-digit phone starting with 6-9
+    // Mother Phone: Required, must be valid 10-digit phone starting with 6-9
     motherPhone: Yup.string()
-      .nullable()
-      .when("motherName", {
-        is: (val) => val && val.trim().length > 0,
-        then: (schema) =>
-          schema
-            .required("Phone number is required when mother name is provided")
-            .matches(phoneRegex, "Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits"),
-        otherwise: (schema) =>
-          schema.matches(phoneRegex, "Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits"),
-      }),
+      .required("Phone number is required")
+      .matches(phoneRegex, "Phone number must start with 6, 7, 8, or 9 and be exactly 10 digits"),
 
-    // Mother Email: Required if mother name is provided, must be valid email format
+    // Mother Email: Required, must be valid email format
     motherEmail: Yup.string()
+      .required("Email is required")
       .trim()
-      .nullable()
-      .when("motherName", {
-        is: (val) => val && val.trim().length > 0,
-        then: (schema) =>
-          schema
-            .required("Email is required when mother name is provided")
-            .matches(emailRegex, "Please enter a valid email address"),
-        otherwise: (schema) => schema.matches(emailRegex, "Please enter a valid email address"),
-      }),
+      .matches(emailRegex, "Please enter a valid email address"),
 
     // Mother Sector: Optional dropdown selection
     motherSector: Yup.string().nullable(),
@@ -123,35 +95,40 @@ const schoolSaleConfValidationSchema = (maxConcessionLimit = 999999) =>
     // ===================================================
     // ACADEMIC INFORMATION
     // ===================================================
-    // Orientation Name: Optional dropdown selection
-    orientationName: Yup.string().nullable(),
+    // Orientation Name: Required dropdown selection
+    orientationName: Yup.string()
+      .required("Orientation Name is required"),
 
     // Orientation Fee: Required field, must contain only digits
     orientationFee: Yup.string()
       .required("Orientation Fee is required")
       .matches(digitsOnlyRegex, "Orientation Fee must contain digits only"),
 
-    // Score App No: Optional, but if provided must contain only digits
+    // Score App No: Required field, must contain only digits
     scoreAppNo: Yup.string()
-      .nullable()
+      .required("Score App No is required")
       .matches(digitsOnlyRegex, "Score App No must contain digits only"),
 
-    // Score Marks: Optional, but if provided must contain only digits
+    // Score Marks: Required field, must contain only digits
     scoreMarks: Yup.string()
-      .nullable()
+      .required("Score Marks is required")
       .matches(digitsOnlyRegex, "Score Marks must contain digits only"),
 
-    // Food Type: Optional dropdown selection
-    foodType: Yup.string().nullable(),
+    // Food Type: Required dropdown selection
+    foodType: Yup.string()
+      .required("Food Type is required"),
 
-    // Blood Group: Optional dropdown selection
-    bloodGroup: Yup.string().nullable(),
+    // Blood Group: Required dropdown selection
+    bloodGroup: Yup.string()
+      .required("Blood Group is required"),
 
-    // Caste: Optional dropdown selection
-    caste: Yup.string().nullable(),
+    // Caste: Required dropdown selection
+    caste: Yup.string()
+      .required("Caste is required"),
 
-    // Religion: Optional dropdown selection
-    religion: Yup.string().nullable(),
+    // Religion: Required dropdown selection
+    religion: Yup.string()
+      .required("Religion is required"),
 
     // ===================================================
     // LANGUAGE INFORMATION

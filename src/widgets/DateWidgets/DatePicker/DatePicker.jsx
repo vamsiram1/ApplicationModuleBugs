@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./DatePicker.module.css";
-
+import Asterisk from "../../../assets/application-status/Asterisk";
+ 
 const dateIcon = (
   <svg
     width="16"
@@ -33,73 +34,64 @@ const dateIcon = (
     />
   </svg>
 );
-
-const DatePicker = ({ name = "dateInput", label, value, onChange }) => {
-  const dateInputRef = useRef(null);
+ 
+const DatePicker = ({ name = "dateInput", label, value, onChange,required = false, error }) => {
+ const dateInputRef = useRef(null);
   const [dateValue, setDateValue] = useState(value || "");
-
-  // Sync internal state when value prop changes (for Formik controlled component)
+ 
+  // Helper to get today's date in YYYY-MM-DD format
+  const getTodayDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+ 
   useEffect(() => {
     if (value !== undefined && value !== null) {
       setDateValue(value || "");
     }
   }, [value]);
-
+ 
   const handleChange = (e) => {
     const newValue = e.target.value;
+   
+    // Safety check: prevent state update if user manually types a future date
+    if (newValue > getTodayDate()) {
+      return;
+    }
+ 
     setDateValue(newValue);
-    // Call onChange if provided (for Formik integration)
     if (onChange) {
       onChange(e);
     }
   };
-
+ 
   const openDatePicker = () => {
     if (dateInputRef.current?.showPicker) {
       dateInputRef.current.showPicker();
     }
   };
-
+ 
   const handleIconClick = (e) => {
     e.stopPropagation();
     openDatePicker();
   };
-
+ 
   const handleKeyDown = (e) => {
     const key = e.key;
-    const value = e.target.value;
-
-    // Allow control keys
-    const allowedKeys = [
-      "Backspace",
-      "Delete",
-      "ArrowLeft",
-      "ArrowRight",
-      "Tab",
-      "Home",
-      "End",
-    ];
-    if (allowedKeys.includes(key) || e.metaKey || e.ctrlKey) {
-      return;
-    }
-
-    // Allow only digits (browser handles separators like - or /)
+    const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Home", "End"];
+   
+    if (allowedKeys.includes(key) || e.metaKey || e.ctrlKey) return;
+ 
     if (!/^\d$/.test(key)) {
       e.preventDefault();
       return;
     }
-
-    // Enforce total length (10 characters for YYYY-MM-DD, including separators)
-    if (value.length >= 13) {
-      e.preventDefault();
-      return;
-    }
   };
-
+ 
   return (
     <div className={styles.date_wrapper}>
       <label htmlFor={name} className={styles.date_label}>
         {label}
+        {required && <Asterisk style={{ marginLeft: "4px" }}/>}
       </label>
       <input
         ref={dateInputRef}
@@ -122,8 +114,9 @@ const DatePicker = ({ name = "dateInput", label, value, onChange }) => {
       >
         {dateIcon}
       </button>
+      {error && <div className={styles.errormessage}>{error}</div>}
     </div>
   );
 };
-
+ 
 export default DatePicker;

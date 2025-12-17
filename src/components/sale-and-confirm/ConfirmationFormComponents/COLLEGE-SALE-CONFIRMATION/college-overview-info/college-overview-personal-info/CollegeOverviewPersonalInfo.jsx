@@ -56,18 +56,23 @@ const CollegeOverviewPersonalInfo = ({ data }) => {
           </div>
 
           <div className={styles.infoItem}>
-            <span className={styles.label}>Admission Referred by</span>
+            <span className={styles.label}>Admission Referred by / Quota</span>
             <span className={styles.value}>{data?.admissionReferredByName || '-'}</span>
           </div>
 
-          <div className={styles.infoItem}>
+          {/* <div className={styles.infoItem}>
             <span className={styles.label}>Quota</span>
             <span className={styles.value}>{data?.quotaName || '-'}</span>
-          </div>
+          </div> */}
 
           <div className={styles.infoItem}>
             <span className={styles.label}>Aadhar Card No</span>
             <span className={styles.value}>{data?.aadharNo || '-'}</span>
+          </div>
+
+          <div className={styles.infoItem}>
+            <span className={styles.label}>Admission Type</span>
+            <span className={styles.value}>{data?.admissionTypeName || '-'}</span>
           </div>
         </div>
       </div>

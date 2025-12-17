@@ -3,7 +3,7 @@ import Dropdown from "../../../../../../widgets/Dropdown/Dropdown";
 import styles from "./SchoolSaleConfLangInfo.module.css";
 import { useLanguages } from "./hooks/Schoollanguae";
 
-const SchoolSaleConfLangInfo = ({ formData, onChange }) => {
+const SchoolSaleConfLangInfo = ({ formData, onChange, errors = {} }) => {
   // Fetch languages from API
   const { languageOptions, getLanguageIdByLabel, getLanguageLabelById, loading: languagesLoading } = useLanguages();
 
@@ -156,32 +156,57 @@ const SchoolSaleConfLangInfo = ({ formData, onChange }) => {
       </div>
 
       <div className={styles.formGrid3}>
-        <Dropdown
-          dropdownname="1st Language"
-          name="firstLanguage"
-          results={getFirstLanguageOptions()}
-          value={getLanguageDisplayValue(formData.firstLanguage)}
-          onChange={handleLanguageChange("firstLanguage")}
-          disabled={languagesLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname={
+              <>
+                <span>1st Language</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            }
+            name="firstLanguage"
+            placeholder="Select 1st Language"
+            results={getFirstLanguageOptions()}
+            value={getLanguageDisplayValue(formData.firstLanguage)}
+            onChange={handleLanguageChange("firstLanguage")}
+            disabled={languagesLoading}
+          />
+          {errors.firstLanguage && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.firstLanguage}</span>
+          )}
+        </div>
 
-        <Dropdown
-          dropdownname="2nd Language"
-          name="secondLanguage"
-          results={getSecondLanguageOptions()}
-          value={getLanguageDisplayValue(formData.secondLanguage)}
-          onChange={handleLanguageChange("secondLanguage")}
-          disabled={languagesLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname={
+              <>
+                <span>2nd Language</span>
+                <span style={{ color: 'red', marginLeft: '2px' }}>*</span>
+              </>
+            }
+            name="secondLanguage"
+            placeholder="Select 2nd Language"
+            results={getSecondLanguageOptions()}
+            value={getLanguageDisplayValue(formData.secondLanguage)}
+            onChange={handleLanguageChange("secondLanguage")}
+            disabled={languagesLoading}
+          />
+          {errors.secondLanguage && (
+            <span style={{ color: 'red', fontSize: 12 }}>{errors.secondLanguage}</span>
+          )}
+        </div>
 
-        <Dropdown
-          dropdownname="3rd Language"
-          name="thirdLanguage"
-          results={getThirdLanguageOptions()}
-          value={getLanguageDisplayValue(formData.thirdLanguage)}
-          onChange={handleLanguageChange("thirdLanguage")}
-          disabled={languagesLoading}
-        />
+        <div>
+          <Dropdown
+            dropdownname="3rd Language"
+            name="thirdLanguage"
+            placeholder="Select 3rd Language"
+            results={getThirdLanguageOptions()}
+            value={getLanguageDisplayValue(formData.thirdLanguage)}
+            onChange={handleLanguageChange("thirdLanguage")}
+            disabled={languagesLoading}
+          />
+        </div>
       </div>
     </div>
   );

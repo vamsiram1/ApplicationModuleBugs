@@ -9,7 +9,7 @@
 .line {
   flex: 1;
   height: 1px;
-  background:linear-gradient(to right, #B6B6B6 0%, #FFFFFF00 40%);
+  background:linear-gradient(to right, #B6B6B6 0%, #FFFFFF00 30%);
 }
 .formGrid {
   display: grid;
@@ -26,13 +26,14 @@
 }
 .inputWithIcon {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .inputIcon {
   position: absolute;
   right: 14px;
-  top: 53%;
-  transform: translateY(-20%);
+  top: 30px;
   pointer-events: none;
 }
 
@@ -50,6 +51,12 @@
   color: #344054;
   font-weight: 400;
   margin-bottom: 4px;
+}
+
+.mandatoryAsterisk {
+  color: #D92D20;
+  margin-left: 4px;
+  font-weight: 600;
 }
 
 /* Responsive */

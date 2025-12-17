@@ -15,6 +15,7 @@ export const renderField = (fieldName, fieldMap, extraProps = {}) => {
         name={field.name}
         label={field.label}
         placeholder={field.placeholder}
+        required={field.required}
         {...extraProps}
       />
     );
@@ -48,6 +49,7 @@ export const renderField = (fieldName, fieldMap, extraProps = {}) => {
         name={field.name}
         placeholder={field.placeholder}
         rows={field.rows || 4}
+         required={field.required}
         {...extraProps}
       />
     );

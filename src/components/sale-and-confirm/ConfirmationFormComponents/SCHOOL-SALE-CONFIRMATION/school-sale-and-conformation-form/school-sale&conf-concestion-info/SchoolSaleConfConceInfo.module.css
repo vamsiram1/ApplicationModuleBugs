@@ -17,7 +17,7 @@
 .line {
   flex: 1;
   height: 1px;
-  background:linear-gradient(to right, #B6B6B6 0%, #FFFFFF00 40%);
+  background:linear-gradient(to right, #B6B6B6 0%, #FFFFFF00 30%);
 }
 
 

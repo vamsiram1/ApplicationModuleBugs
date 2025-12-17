@@ -31,7 +31,7 @@ const SchoolSaleOverviewCont = ({ onNext, onEdit, onBack, detailsObject, student
     <div className={styles.container}>
       <SchoolOverviewTopSection
         step={1}
-        title="Application Sale & Confirmation"
+        title="Application Confirmation"
         detailsObject={detailsObject}
         onBack={onBack}
       />

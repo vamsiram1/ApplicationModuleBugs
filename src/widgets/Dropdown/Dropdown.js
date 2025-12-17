@@ -253,6 +253,7 @@ const Dropdown = ({
           </ul>
         </div>
       )}
+      {error && <div className={styles.dropdown_error}>{error}</div>}
     </div>
   );
 };

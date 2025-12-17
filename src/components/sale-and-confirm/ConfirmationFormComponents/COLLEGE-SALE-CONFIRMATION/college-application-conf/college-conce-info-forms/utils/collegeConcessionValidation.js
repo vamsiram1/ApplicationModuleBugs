@@ -15,7 +15,9 @@ function safeTrim(value) {
  */
 function safeToNumber(value) {
   if (value === null || value === undefined || value === '') return 0;
-  const num = Number(value);
+  // Remove commas and any non-numeric characters except dot and minus
+  const cleaned = String(value).replace(/[^0-9.-]+/g, "");
+  const num = Number(cleaned);
   return isNaN(num) ? 0 : num;
 }
 
@@ -29,36 +31,32 @@ function safeToNumber(value) {
 export function validateCollegeConcessionInfo(formData, academicFormData) {
   const errors = {};
 
+  // Debug: log incoming values to help diagnose missing validation
+  try {
+    // Use console.debug so it's easier to filter in browser devtools
+    console.debug("[validateCollegeConcessionInfo] formData.firstYearConcession:", formData?.firstYearConcession,
+      "formData.secondYearConcession:", formData?.secondYearConcession,
+      "formData.description:", formData?.description,
+      "academicFormData.courseFee:", academicFormData?.courseFee);
+  } catch (e) {
+    // ignore logging errors
+  }
+
   // Get orientation fee from academicFormData
   const orientationFee = safeToNumber(academicFormData?.courseFee || academicFormData?.orientationFee || 0);
   
   // Get concession amounts
   const firstYearConcession = safeToNumber(formData?.firstYearConcession || 0);
   const secondYearConcession = safeToNumber(formData?.secondYearConcession || 0);
-
-  // If orientation fee is not provided, we can't validate
-  if (orientationFee <= 0) {
-    // Don't validate concessions if orientation fee is missing
-    return errors;
-  }
-
-  // Validate 1st Year Concession individually
-  if (firstYearConcession > orientationFee) {
-    errors.firstYearConcession = `1st Year Concession (${firstYearConcession}) cannot exceed orientation fee (${orientationFee})`;
-  }
-
-  // Validate 2nd Year Concession individually
-  if (secondYearConcession > orientationFee) {
-    errors.secondYearConcession = `2nd Year Concession (${secondYearConcession}) cannot exceed orientation fee (${orientationFee})`;
-  }
-
-  // Check if any concession amount is entered, make referredBy, concessionReason, and authorizedBy mandatory
+  // Get whether any concession amount is entered
   const hasConcessionAmount = firstYearConcession > 0 || secondYearConcession > 0;
 
+  // If any concession amount is entered, make referredBy, concessionReason, authorizedBy and description mandatory
   if (hasConcessionAmount) {
     const referredBy = safeTrim(formData?.referredBy);
     const concessionReason = safeTrim(formData?.concessionReason);
     const authorizedBy = safeTrim(formData?.authorizedBy);
+    const description = safeTrim(formData?.description);
 
     if (!referredBy) {
       errors.referredBy = "Referred by is required when concession amount is entered";
@@ -68,8 +66,34 @@ export function validateCollegeConcessionInfo(formData, academicFormData) {
       errors.concessionReason = "Concession Reason is required when concession amount is entered";
     }
 
+    if (!description) {
+      errors.description = "Description is required when concession amount is entered";
+    }
+
     if (!authorizedBy) {
       errors.authorizedBy = "Authorized by is required when concession amount is entered";
+    }
+  }
+
+  // If orientation fee is provided, validate concession amounts against it
+  if (orientationFee > 0) {
+    // Validate 1st Year Concession individually
+    if (firstYearConcession > orientationFee) {
+      errors.firstYearConcession = `1st Year Concession (${firstYearConcession}) cannot exceed orientation fee (${orientationFee})`;
+    }
+
+    // Validate 2nd Year Concession individually
+    if (secondYearConcession > orientationFee) {
+      errors.secondYearConcession = `2nd Year Concession (${secondYearConcession}) cannot exceed orientation fee (${orientationFee})`;
+    }
+  }
+
+  // If Concession Written on Application amount is provided, make 'reason' mandatory
+  const rawConcessionWritten = safeTrim(formData?.concessionAmount);
+  if (rawConcessionWritten !== "") {
+    const reasonForWritten = safeTrim(formData?.reason);
+    if (!reasonForWritten) {
+      errors.reason = "Reason is required when Concession Written on Application amount is entered";
     }
   }
 

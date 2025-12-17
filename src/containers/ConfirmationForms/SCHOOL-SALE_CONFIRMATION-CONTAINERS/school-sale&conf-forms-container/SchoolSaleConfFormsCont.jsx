@@ -10,7 +10,8 @@ import SchoolSaleConfConceInfo from "../../../../components/sale-and-confirm/Con
 import ButtonRightArrow from '../../../../assets/application-status/school-sale-conf-assets/ButtonRightArrow';
 import Snackbar from "../../../../widgets/Snackbar/Snackbar.jsx";
 import useParentValidation from "../../../../components/sale-and-confirm/ConfirmationFormComponents/SCHOOL-SALE-CONFIRMATION/school-sale-and-conformation-form/school-sale&conf-parent-information/hooks/useParentValidation";
-import { validateConcessionInfo } from "../../../../components/sale-and-confirm/ConfirmationFormComponents/SCHOOL-SALE-CONFIRMATION/school-sale-and-conformation-form/school-sale&conf-academic-info/utils/academicValidation";
+import { validateConcessionInfo, validateAcademicInfo } from "../../../../components/sale-and-confirm/ConfirmationFormComponents/SCHOOL-SALE-CONFIRMATION/school-sale-and-conformation-form/school-sale&conf-academic-info/utils/academicValidation";
+import { validateLanguageInfo } from "../../../../components/sale-and-confirm/ConfirmationFormComponents/SCHOOL-SALE-CONFIRMATION/school-sale-and-conformation-form/school-sale&conf-language-info/utils/languageValidation";
 import { useOrientations } from "../../../../components/sale-and-confirm/ConfirmationFormComponents/SCHOOL-SALE-CONFIRMATION/school-sale-and-conformation-form/school-sale&conf-academic-info/hooks/SchoolAcedemic";
 
 const SchoolSaleConfFormsCont = ({ onBack, onProceedToPayment, detailsObject, overviewData }) => {
@@ -222,6 +223,40 @@ const SchoolSaleConfFormsCont = ({ onBack, onProceedToPayment, detailsObject, ov
   };
 
   const handleProceedToPayment = () => {
+    // First validate language information
+    const languageErrors = validateLanguageInfo(formData);
+    
+    if (Object.keys(languageErrors).length > 0) {
+      // Store language validation errors
+      setValidationErrors((prev) => ({ ...prev, ...languageErrors }));
+      
+      // Scroll to first language field error
+      const firstErrorField = Object.keys(languageErrors)[0];
+      const errorElement = document.querySelector(`[name="${firstErrorField}"]`);
+      if (errorElement) {
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        errorElement.focus();
+      }
+      return;
+    }
+
+    // Validate academic information
+    const academicErrors = validateAcademicInfo(formData);
+    
+    if (Object.keys(academicErrors).length > 0) {
+      // Store academic validation errors
+      setValidationErrors((prev) => ({ ...prev, ...academicErrors }));
+      
+      // Scroll to first academic field error
+      const firstErrorField = Object.keys(academicErrors)[0];
+      const errorElement = document.querySelector(`[name="${firstErrorField}"]`);
+      if (errorElement) {
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        errorElement.focus();
+      }
+      return;
+    }
+
     // Validate parent and sibling information before proceeding
     const validationResult = validateAndShowErrors(formData, siblings);
     
@@ -276,7 +311,7 @@ const SchoolSaleConfFormsCont = ({ onBack, onProceedToPayment, detailsObject, ov
 
   return (
     <div className={styles.container}>
-      <SchoolOverviewTopSection step={2} onBack={onBack} title="Application Sale & Confirmation" detailsObject={detailsObject} />
+      <SchoolOverviewTopSection step={2} onBack={onBack} title="Application Confirmation" detailsObject={detailsObject} />
 
       <div className={styles.formContainer}>
         <SchoolSaleConfParentInfo 
@@ -305,6 +340,7 @@ const SchoolSaleConfFormsCont = ({ onBack, onProceedToPayment, detailsObject, ov
         <SchoolSaleConfLangInfo
           formData={formData}
           onChange={handleChange}
+          errors={validationErrors}
         />
 
         <SchoolSaleConfConceInfo

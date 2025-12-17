@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CurrentDate.module.css"; // Assuming you have relevant CSS in this file
- 
- 
+import Asterisk from "../../../assets/application-status/Asterisk";
+
 const dateIcon = (
   <svg
     width="16"
@@ -34,33 +34,36 @@ const dateIcon = (
     />
   </svg>
 );
- 
-const CurrentDate = ({label}) => {
+
+const CurrentDate = ({ label, required = false }) => {
   // 1. State to hold the formatted current date string
   const [currentDate, setCurrentDate] = useState("");
- 
+
   // 2. useEffect to calculate and set the date when the component mounts
   useEffect(() => {
     const today = new Date();
- 
+
     // Helper function to ensure two digits (e.g., 01, 09)
-    const padToTwoDigits = (num) => String(num).padStart(2, '0');
- 
+    const padToTwoDigits = (num) => String(num).padStart(2, "0");
+
     // Extract day, month, and year
     const day = padToTwoDigits(today.getDate());
     const month = padToTwoDigits(today.getMonth() + 1); // Month is 0-indexed, so add 1
     const year = today.getFullYear();
- 
+
     // Format the date as dd/mm/yyyy
     const formattedDate = `${day}/${month}/${year}`;
- 
+
     // Set the state
     setCurrentDate(formattedDate);
   }, []); // Empty dependency array ensures this runs only once after the initial render
- 
+
   return (
     <div className={styles.dateContainer}>
-      <label htmlFor="currentDateInput" className={styles.date_label}>{label}</label>
+      <label htmlFor="currentDateInput" className={styles.date_label}>
+        {label}
+        {required && <Asterisk style={{ marginLeft: "4px" }} />}
+      </label>
       <input
         id="currentDateInput"
         type="text" // Using 'text' type as requested
@@ -72,5 +75,5 @@ const CurrentDate = ({label}) => {
     </div>
   );
 };
- 
+
 export default CurrentDate;

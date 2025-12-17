@@ -64,25 +64,21 @@ const SchoolOverviewPersonalInformation = ({ overviewData }) => {
           </div>
 
           <div className={styles.infoItem}>
-            <span className={styles.label}>Admission Referred by</span>
+            <span className={styles.label}>Admission Referred by / Quota</span>
             <span className={styles.value}>{overviewData?.admissionReferredByName || '-'}</span>
           </div>
 
-          <div className={styles.infoItem}>
-            <span className={styles.label}>Quota</span>
-            <span className={styles.value}>{overviewData?.quotaName || '-'}</span>
-          </div>
-
+         
           {/* ROW 3 */}
           <div className={styles.infoItem}>
             <span className={styles.label}>Aadhar Card No</span>
             <span className={styles.value}>{overviewData?.aadharCardNo || '-'}</span>
           </div>
 
-          {/* <div className={styles.infoItem}>
-            <span className={styles.label}>PRO Receipt No</span>
-            <span className={styles.value}>{overviewData?.proReceiptNo ?? '-'}</span>
-          </div> */}
+          <div className={styles.infoItem}>
+            <span className={styles.label}>Admission Type</span>
+            <span className={styles.value}>{overviewData?.admissionTypeName || '-'}</span>
+          </div>
         </div>
       </div>
     </div>

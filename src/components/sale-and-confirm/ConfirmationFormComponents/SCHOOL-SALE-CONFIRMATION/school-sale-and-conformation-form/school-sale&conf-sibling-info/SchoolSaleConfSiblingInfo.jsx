@@ -133,7 +133,7 @@ const SchoolSaleConfSiblingInfo = ({
                 className={styles.deleteBtn}
                 onClick={() => onDeleteSibling(sibling.id)}
               >
-                ?
+                x
               </button>
             </div>
           </div>
